@@ -1,0 +1,59 @@
+function resposta() {
+
+    url = window.location.href.split('/')
+    hack = url[url.length-1]
+
+    fetch(`https://kahoot.it/rest/challenges/${hack}?includeKahoot=true`, {
+      "headers": {
+        "accept": "*/*",
+        "accept-language": "en-CA,en;q=0.9,pt-BR;q=0.8,pt;q=0.7,ru-RU;q=0.6,ru;q=0.5,en-GB;q=0.4,en-US;q=0.3",
+        "cache-control": "no-cache",
+        "content-type": "application/json",
+        "pragma": "no-cache",
+        "sec-ch-ua": "\"Google Chrome\";v=\"89\", \"Chromium\";v=\"89\", \";Not A Brand\";v=\"99\"",
+        "sec-ch-ua-mobile": "?0",
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+        "x-kahoot-tracking": "platform/Web"
+      },
+      "referrer": "https://kahoot.it/challenge/6b1ca92f-1734-4ae7-b2ae-23f37086a06d_1618629587918",
+      "referrerPolicy": "strict-origin-when-cross-origin",
+      "body": null,
+      "method": "GET",
+      "mode": "cors",
+      "credentials": "include"
+    }).then(function(response) {
+      response.text()
+      .then(function(result) {
+
+        let saida = JSON.parse(result);
+        let questions = saida.kahoot.questions
+
+
+        questions.map(q => {
+            if (document.body.innerHTML.indexOf(q.question) !== -1) {
+                q.choices.map(r => {
+                    if (r.correct) {
+                        alert('A resposta é: \n\n '+r.answer)
+                    }
+                })
+            }
+        })
+
+      })
+    })
+}
+
+btn = document.createElement('button')
+btn.textContent = 'RESPOSTA AQUI'
+btn.style.position = 'fixed'
+btn.style.top = '10px'
+btn.style.left = '10px'
+btn.style.width = '200px'
+btn.style.height = '30px'
+btn.style.zIndex = 9999999
+btn.onclick = () => {
+    resposta()
+}
+document.body.append(btn)
