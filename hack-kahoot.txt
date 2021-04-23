@@ -32,10 +32,13 @@ function resposta() {
 
 
         questions.map(q => {
-            if (document.body.innerHTML.indexOf(q.question) !== -1) {
+            let fi = document.createElement('div')
+            fi.innerHTML = q.question
+            if (document.body.innerHTML.indexOf(fi.innerText) !== -1) {
                 q.choices.map(r => {
                     if (r.correct) {
                         alert('A resposta é: \n\n '+r.answer)
+                        return 1
                     }
                 })
             }
